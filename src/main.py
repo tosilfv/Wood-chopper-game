@@ -1,16 +1,31 @@
 import os
 import pygame
 
-X = 270
-Y = 290
-running = True
+AXE_X = 314
+axe_y = 20
+AXE_WID = 12
+AXE_HGT = 20
+LOG_X = 270
+LOG_Y = 290
+LOG_WID = 100
+LOG_HGT = 140
+VEL = 10
+blade_x1 = 315
+blade_y1 = 40
+blade_x2 = 320
+blade_y2 = 70
+blade_x3 = 325
+blade_y3 = 40
+axe_blade = [(blade_x1, blade_y1), (blade_x2, blade_y2), (blade_x3, blade_y3)]
+run = True
+chop = False
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 pygame.init()
 window = pygame.display.set_mode(
-        (640, 480)
-    )
+            (640, 480)
+        )
 pygame.display.set_caption("Wood Chopper Game")
 ico = file=os.path.join(
                 os.path.dirname(
@@ -21,24 +36,28 @@ pygame.display.set_icon(
 )
 
 clock = pygame.time.Clock()
-while running:
+while run:
+    # pygame.time.delay(10)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            run = False
             break
-        # elif event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_ESCAPE:
-        #         running = False
-        #         break
-        #     elif event.key == pygame.K_RIGHT:
-        #         X += 10
-        #     elif event.key == pygame.K_LEFT:
-        #         X -= 10
-        #     elif event.key == pygame.K_DOWN:
-        #         Y += 10
-        #     elif event.key == pygame.K_UP:
-        #         Y -= 10
+    
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_ESCAPE]:
+        run = False
+        break
+    if chop:
+        if axe_y < LOG_Y - AXE_HGT:
+            axe_y += VEL
+    elif axe_y >= LOG_Y:
+        print(chop)
+        # chop = False
+    elif keys[pygame.K_RETURN] and axe_y < LOG_Y:
+        axe_y += VEL
+        chop = True
 
     window.fill(
         "#000000"
@@ -46,9 +65,19 @@ while running:
     pygame.draw.rect(
         window,
         "#7E2800",
-        (X, Y, 100, 140)
+        (LOG_X, LOG_Y, LOG_WID, LOG_HGT)
     )
-    pygame.display.update()    
+    pygame.draw.rect(
+        window,
+        "#7E7E7E",
+        (AXE_X, axe_y, AXE_WID, AXE_HGT)
+    )
+    pygame.draw.polygon(
+        window,
+        "#7E7E7E",
+        axe_blade
+    )
+    pygame.display.update()
 
     clock.tick(60)
 
