@@ -1,25 +1,37 @@
 import os
 import pygame
 
+# Constants
+AXE_START_POS = 20
+AXE_END_POS = 270
 AXE_X = 314
-axe_y = 20
 AXE_WID = 12
 AXE_HGT = 20
+BLADE_START_POS_X1 = 315
+BLADE_START_POS_X2 = 320
+BLADE_START_POS_X3 = 325
+BLADE_END_POS = 250
 LOG_X = 270
-LOG_Y = 290
+LOG_Y = 310
 LOG_WID = 100
 LOG_HGT = 140
 VEL = 10
-blade_x1 = 315
-blade_y1 = 40
-blade_x2 = 320
-blade_y2 = 70
-blade_x3 = 325
-blade_y3 = 40
-axe_blade = [(blade_x1, blade_y1), (blade_x2, blade_y2), (blade_x3, blade_y3)]
-run = True
-chop = False
 
+# Variables
+axe_y = AXE_START_POS
+blade_y1 = 40
+blade_y2 = 70
+blade_y3 = 40
+axe_blade = [
+    (BLADE_START_POS_X1, blade_y1),
+    (BLADE_START_POS_X2, blade_y2),
+    (BLADE_START_POS_X3, blade_y3)
+]
+run = True
+# chop = False
+axe_to_start = False
+
+# Position window in center of display
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 pygame.init()
@@ -37,7 +49,6 @@ pygame.display.set_icon(
 
 clock = pygame.time.Clock()
 while run:
-    # pygame.time.delay(10)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,15 +60,18 @@ while run:
     if keys[pygame.K_ESCAPE]:
         run = False
         break
-    if chop:
-        if axe_y < LOG_Y - AXE_HGT:
-            axe_y += VEL
-    elif axe_y >= LOG_Y:
-        print(chop)
-        # chop = False
-    elif keys[pygame.K_RETURN] and axe_y < LOG_Y:
-        axe_y += VEL
-        chop = True
+    if keys[pygame.K_RETURN]:
+        axe_y = AXE_END_POS
+        axe_blade = [
+            (BLADE_START_POS_X1, blade_y1 + BLADE_END_POS),
+            (BLADE_START_POS_X2, blade_y2 + BLADE_END_POS),
+            (BLADE_START_POS_X3, blade_y3 + BLADE_END_POS)
+        ]
+        axe_to_start = True
+    if axe_to_start and axe_y > 20:
+        axe_y -= VEL
+        for i in range(len(axe_blade)):
+            axe_blade[i] = (axe_blade[i][0], axe_blade[i][1] - VEL)
 
     window.fill(
         "#000000"
@@ -78,7 +92,6 @@ while run:
         axe_blade
     )
     pygame.display.update()
-
     clock.tick(60)
 
 pygame.quit()
