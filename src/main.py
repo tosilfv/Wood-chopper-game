@@ -3,33 +3,44 @@ import pygame
 
 # Constants
 AXE_START_POS = 20
-AXE_END_POS = 270
+AXE_END_POS = 280
 AXE_X = 314
 AXE_WID = 12
 AXE_HGT = 20
 BLADE_START_POS_X1 = 315
 BLADE_START_POS_X2 = 320
 BLADE_START_POS_X3 = 325
-BLADE_END_POS = 250
+BLADE_END_POS = 260
+BLOCK_LEFT_WID = 15
+BLOCK_LEFT_HGT = 70
+BLOCK_RIGHT_WID = 15
+BLOCK_RIGHT_HGT = 70
 LOG_X = 270
 LOG_Y = 310
 LOG_WID = 100
 LOG_HGT = 140
-VEL = 10
+VEL = 20
+WOOD_X = 305
+WOOD_Y = 240
+WOOD_WID = 30
+WOOD_HGT = 70
 
 # Variables
 axe_y = AXE_START_POS
 blade_y1 = 40
 blade_y2 = 70
 blade_y3 = 40
+block_left_x = 305
+block_left_y = 240
+block_right_x = 320
+block_right_y = 240
 axe_blade = [
     (BLADE_START_POS_X1, blade_y1),
     (BLADE_START_POS_X2, blade_y2),
     (BLADE_START_POS_X3, blade_y3)
 ]
 run = True
-# chop = False
-axe_to_start = False
+chopped = False
 
 # Position window in center of display
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -60,6 +71,12 @@ while run:
     if keys[pygame.K_ESCAPE]:
         run = False
         break
+    if axe_y == 20:
+        block_left_x = 305
+        block_left_y = 240
+        block_right_x = 320
+        block_right_y = 240
+        chopped = False
     if keys[pygame.K_RETURN]:
         axe_y = AXE_END_POS
         axe_blade = [
@@ -67,12 +84,15 @@ while run:
             (BLADE_START_POS_X2, blade_y2 + BLADE_END_POS),
             (BLADE_START_POS_X3, blade_y3 + BLADE_END_POS)
         ]
-        axe_to_start = True
-    if axe_to_start and axe_y > 20:
+        chopped = True
+    if axe_y > 20:
         axe_y -= VEL
         for i in range(len(axe_blade)):
             axe_blade[i] = (axe_blade[i][0], axe_blade[i][1] - VEL)
-
+        block_left_x -= VEL
+        block_left_y -= VEL
+        block_right_x += VEL
+        block_right_y -= VEL
     window.fill(
         "#000000"
     )
@@ -80,6 +100,16 @@ while run:
         window,
         "#7E2800",
         (LOG_X, LOG_Y, LOG_WID, LOG_HGT)
+    )
+    pygame.draw.rect(
+        window,
+        "#A34303",
+        (block_left_x, block_left_y, BLOCK_LEFT_WID, BLOCK_LEFT_HGT)
+    )
+    pygame.draw.rect(
+        window,
+        "#A34303",
+        (block_right_x, block_right_y, BLOCK_RIGHT_WID, BLOCK_RIGHT_HGT)
     )
     pygame.draw.rect(
         window,
