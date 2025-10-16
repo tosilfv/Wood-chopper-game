@@ -20,10 +20,6 @@ LOG_Y = 310
 LOG_WID = 100
 LOG_HGT = 140
 VEL = 20
-WOOD_X = 305
-WOOD_Y = 240
-WOOD_WID = 30
-WOOD_HGT = 70
 
 # Variables
 axe_y = AXE_START_POS

@@ -1,9 +1,5 @@
 # Pygame Wood Chopper Game
 
-## Video
-
-![Video](video_4.gif)<br />
-
 ## Description
 
 This is a [Pygame](https://www.pygame.org/docs/) game.<br />
@@ -39,32 +35,3 @@ Interface Requirements<br/>
 Design Constraints<br/>
     Hardware: PC.<br/>
     Software: Visual Studio Code with Python 3.13.5.<br/>
-
-## Software Design Pattern
-
-[Mediator pattern](https://en.wikipedia.org/wiki/Mediator_pattern).<br/>
-
-## Testing
-
-TODO
-
-## Documentation
-
-TODO
-
-## Instructions
-
-TODO
-
-## Ohjeet
-
-TODO
-
-## N.B.
-
-TODO
-
-## Changelog
-
-**[0.0.0] - Oct XX. 2025:**<br />
-_- TODO._<br />
